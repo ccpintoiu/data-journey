@@ -4,7 +4,7 @@ Cloud Run works smooth to apply simple data transformations. On top of that it s
 Let's think one step further. Imagine for example you need to apply aggregations, not only transformations. 
 For example, you might need to support a real time dashboard to display the most active users made every minute (aggregation over multiple datapoints). Or you might want to apply real time ML inference of a demanding ML model (distributed compute) before data is written into your Data Warehouse.
 
-For extremely latency sensitive applications, and cases in which aggregations or disstributed compute make the transformations stateful neither ELT nor Cloud Run will do the job.
+For extremely latency sensitive applications, and cases in which aggregations or distributed compute make the transformations stateful neither ELT nor Cloud Run will do the job.
 This is where [Apache Beam](https://beam.apache.org/documentation/basics/) comes to shine!
 
 Dataflow is a great tool to integrate into your pipeline for high volume data streams with complex transformations and aggregations.
@@ -122,7 +122,7 @@ The code should look something like this:
                     # Listining to Pub/Sub.
                     | "Read Topic" >> ReadFromPubSub(subscription=subscription)
                     # Parsing json from message string.
-                    | "Parse json" >> beam.Map(json.loads)
+                    | "Parse json" >> beam.Map(json.loads))
 ```
 
 </details>
@@ -151,7 +151,9 @@ The code should look something like this:
 ```
     
 </details>
-    
+
+Before finishing this section make sure to update the project_id and region in `.ETL/Dataflow/config.py`.
+
 ## Challenge 1.3
 
 To create a flex-template we first need to build the pipeline code as container in the Container Registry.
