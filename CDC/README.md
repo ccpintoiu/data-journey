@@ -21,8 +21,8 @@ What you’ll do:
 ## Git clone repo 
 
 ```
-git clone https://github.com/AmritRaj23/data-journey-v2.git
-cd data-journey-v2/CDC
+git clone https://github.com/NucleusEngineering/data-journey.git
+cd data-journey/CDC
 ```
 
 ## Set-up Cloud Environment
