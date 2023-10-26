@@ -41,7 +41,13 @@ constraints/iam.allowedPolicyMemberDomains
 
 ## Validate Event Ingestion
 
-Open Cloud Shell Editor and enter your GCP Project ID and GCP Region in ./config_env.sh and set all necessary environment variables by running it:
+Open Cloud Shell Editor and enter your GCP Project ID, the GCP Region and the endpoint URL in ./config_env.sh. The endpoint URL refers to the URL of the proxy container deployed to Cloud Run with the streaming data input. To find it, either find the service in the Cloud Run UI, or run the following gcloud command and copy the URL:
+
+```
+gcloud run services list
+```
+
+Set all necessary environment variables by running:
 
 ```
 source config_env.sh
