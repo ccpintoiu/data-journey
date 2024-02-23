@@ -125,14 +125,14 @@ Apply complete! Resources: 5 added, 0 changed, 0 destroyed.
 
 ## Import a SQL file into MySQL
 
-Open a file named create_mysql.sql in vim or your favorite editor, then copy the text below into your file:
+Next, you will copy create_mysql.sql file below into the Cloud Storage bucket you created above, make the file accessible to your Cloud SQL service account, and import the SQL command into your database.
 
 ```
 CREATE DATABASE IF NOT EXISTS database_datajourney;
 USE database_datajourney;
 
 CREATE TABLE IF NOT EXISTS database_datajourney.example_table (
-event_timestamp timestamp,
+event_timestamp integer,
 event_name varchar(255),
 user_pseudo_id varchar(255)
 );
@@ -142,8 +142,6 @@ INSERT INTO database_datajourney.example_table (event_timestamp, event_name, use
 (153862,'screen_view', 'D50D60807F5347EB64EF0CD5A3D4C4CD'),
 (153863, 'post_score', '2D50D60807F5347EB64EF0CD5A3D4C4CD');
 ```
-
-Next, you will copy this file into the Cloud Storage bucket you created above, make the file accessible to your Cloud SQL service account, and import the SQL command into your database.
 
 ```
 SERVICE_ACCOUNT=$(gcloud sql instances describe mysql | grep serviceAccountEmailAddress | awk '{print $2;}')
@@ -176,14 +174,14 @@ View these tables in the BigQuery UI.
 
 ## Write Inserts and Updates
 
-Open a file named update_mysql.sql in vim or your editor, then copy the text below into your file:
+Next, you will copy update_mysql.sql file below into the Cloud Storage bucket you created above, make the file accessible to your Cloud SQL service account, and import the SQL command into your database.
 
 ```
 CREATE DATABASE IF NOT EXISTS database_datajourney;
 USE database_datajourney;
 
 CREATE TABLE IF NOT EXISTS database_datajourney.example_table (
-event_timestamp timestamp,
+event_timestamp integer,
 event_name varchar(255),
 user_pseudo_id varchar(255)
 );
@@ -195,8 +193,6 @@ INSERT INTO database_datajourney.example_table (event_timestamp, event_name, use
 (153867, 'session_start', 'D50D60807F5347EB64EF0CD5A3D4C4CD'),
 (153868, 'user_engagement', 'D50D60807F5347EB64EF0CD5A3D4C4CD');
 ```
-
-Next, you will copy this file into the Cloud Storage bucket you created above, make the file accessible to your Cloud SQL service account, and import the SQL command into your database.
 
 ```
 SQL_FILE=update_mysql.sql
