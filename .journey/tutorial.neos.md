@@ -6,6 +6,9 @@
 
 # Data Journey
 
+
+lorem ipsum
+
 <!-- TODO write journey markdown -->
 
 
