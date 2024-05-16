@@ -166,7 +166,7 @@ Make sure to update config_env.sh with your variables.
     
 ```    
 source config_env.sh
-cd data-journey-v2/ETL/Dataflow
+cd data-journey/ETL/Dataflow
 ```
 
 Run
