@@ -160,21 +160,11 @@ To create a flex-template we first need to build the pipeline code as container 
 
 Build the Dataflow folder content as container named `beam-processing-flex-template` to your Container Registry.
 
-Make sure to update config_env.sh with your variables.
-
 <details><summary>Suggested Solution</summary>
     
 ```    
-source config_env.sh
-cd data-journey/ETL/Dataflow
-```
-
-Run
-```
 gcloud builds submit --tag gcr.io/$GCP_PROJECT/beam-processing-flex-template
 ```
-</details>
-
 
 Create a Cloud Storage Bucket named `gs://<project-id>-gaming-events`. Create a Dataflow flex-template based on the built container and place it in your new GCS bucket.
 
