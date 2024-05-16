@@ -33,7 +33,7 @@ OR follow the documentation on how to [create a BigQuery table with schema throu
 </details>
 
 ## STEP 2
-Second, let's set up your Cloud Run Processing Service. `./ETL/Cloud Run` contains all the necessary files.
+Second, let's set up your Cloud Run Processing Service. `./ETL/CloudRun` contains all the necessary files.
 
 Inspect the `Dockerfile` to understand how the container will be build.
 
@@ -41,7 +41,7 @@ Inspect the `Dockerfile` to understand how the container will be build.
 
 Make sure to replace the required variables in `config.py` so you can access them safely in `main.py`.
 
-Once the code is completed build the container from `./ETL/Cloud Run` into a new [Container Repository] (ttps://cloud.google.com/artifact-registry/docs/overview) named `data-processing-service`.
+Once the code is completed build the container from `./ETL/CloudRun` into a new container repository named `data-processing-service`.
 
 ```
 gcloud builds submit $RUN_PROCESSING_DIR --tag gcr.io/$GCP_PROJECT/data-processing-service
