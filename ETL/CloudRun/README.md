@@ -25,7 +25,7 @@ The processing service will stream the transformed data into this table.
 Run this command
 
 ```
-bq mk --location=europe-west1 --table $GCP_PROJECT:data_journey.cloud run ./schema.json
+bq mk --location=europe-west1 --table $GCP_PROJECT:data_journey.cloud_run ./schema.json
 ```
 
 OR follow the documentation on how to [create a BigQuery table with schema through the console](https://cloud.google.com/bigquery/docs/tables#console).
@@ -107,7 +107,7 @@ You can now stream website interaction data points through your Cloud Run Proxy 
 Run 
 
 ```
-python3 ./datalayer/synth_data_stream.py --endpoint=$ENDPOINT_URL
+python3 synth_json_stream.py --endpoint=$ENDPOINT_URL --bucket=$BUCKET --file=$FILE
 ```
 
 to direct an artificial click stream at your pipeline. No need to reinitialize if you still have the clickstream running from earlier.
