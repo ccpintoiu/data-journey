@@ -30,7 +30,7 @@ def streaming_pipeline(project, region):
 
     subscription = "projects/{}/subscriptions/dj_subscription_dataflow".format(project)
 
-    bucket = "gs://{}-gaming-events/tmp_dir".format(project)
+    bucket = "gs://{}-gaming-events/df_templates".format(project)
 
     # Defining pipeline options.
     options = PipelineOptions(
