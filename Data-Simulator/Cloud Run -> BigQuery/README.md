@@ -10,7 +10,7 @@ Instead, you would like to build a [modern Lakehouse structure](https://cloud.go
 Therefore, your  main concern at this point is to bring the incoming raw data into your Data Warehouse as cost-efficient as possible.
 Data users will worry about the processing.
 
-To start out we aim for rapid iteration. We plan using BigQuery as Data Lakehouse - Combining Data Warehouse and Data Lake).
+To start out we aim for rapid iteration. We plan using BigQuery as Data Lakehouse - Combining Data Warehouse and Data Lake.
 
 To implement our lean ELT pipeline we need:
 - BigQuery Dataset
