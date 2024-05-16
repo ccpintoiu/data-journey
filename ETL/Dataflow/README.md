@@ -165,6 +165,7 @@ Build the Dataflow folder content as container named `beam-processing-flex-templ
 ```    
 gcloud builds submit --tag gcr.io/$GCP_PROJECT/beam-processing-flex-template
 ```
+</details>
 
 Create a Cloud Storage Bucket named `gs://<project-id>-gaming-events`. Create a Dataflow flex-template based on the built container and place it in your new GCS bucket.
 
