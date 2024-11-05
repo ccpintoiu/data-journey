@@ -1,0 +1,11 @@
+{
+  "defaultSchema": "dataform",
+  "assertionSchema": "dataform_assertions",
+  "warehouse": "bigquery",
+  "defaultDatabase": "datajourney-438708",
+  "defaultLocation": "EU",
+  "vars": {
+  "ml_models_dataset": "`datajourney.dataform_outputs`"
+  }
+}
+    

@@ -1,0 +1,22 @@
+config {
+  type: "operations", // Operations can be used to run custom SQL that doesn't necessarily fit into the model of publishing a dataset or writing an assertion
+  schema: "outputs"
+}
+
+-- With our model definition we are taking care of null values, class imbalance, explainability of our model
+-- Learn more about parameters you can tune for our model: https://cloud.google.com/bigquery/docs/reference/standard-sql/bigqueryml-syntax-create-glm
+-- Learn more about supported open export formats (e.g tensorflow, booster model): https://cloud.google.com/bigquery/docs/exporting-models
+-- Click Run to create the model
+
+CREATE OR REPLACE MODEL  ${dataform.projectConfig.vars.ml_models_dataset}.dataform_logistic_regression_xai_auto_weights2
+OPTIONS
+  (MODEL_TYPE='LOGISTIC_REG',
+  MODEL_REGISTRY = 'VERTEX_AI', -- link to vertex model registry
+  VERTEX_AI_MODEL_ID = 'dataform_logistic_regression_auto_weights2',
+  ENABLE_GLOBAL_EXPLAIN = TRUE,
+  AUTO_CLASS_WEIGHTS = TRUE,
+  DATA_SPLIT_METHOD = 'NO_SPLIT',
+  input_label_cols=["churned"]) 
+AS
+SELECT * EXCEPT (user_pseudo_id)
+FROM ${ref("churn_propensity")}
