@@ -31,6 +31,8 @@ By the end of this workshop, you will learn how to:
 * Synchronize the data in MySQL and BigQuery **(/CDC)**
 * Train ML model Using BigQueryML and automate your ML workflow using Vertex ML Pipelines **(/ML)**
 
+
+
 ## Working with labs
 
 You can insert commands into the terminal using the following button on top of each code line in the tutorial:
