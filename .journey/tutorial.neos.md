@@ -87,13 +87,13 @@ In this lab we will set up your environment and set up a messaging stream for ou
 
 We have to make sure your GCP project is prepared:
 
-Clone the github repo we'll be using in this walkthrough.
+Clone the github repo we'll be using in this walkthrough:
 
 ```bash
 git clone https://github.com/NucleusEngineering/data-journey
 cd data-journey/Data-Simulator
 ```
-We will be using Terraform to provision infrastructure, resources, setup network, Service Account and Permissions. 
+We will be using Terraform to provision infrastructure and resources, setup Network, Service Account and Permissions. 
 In addition, we will extracts a sample dataset from a public BigQuery table, build and deploy a sample app and create a Pub/Sub topic.
 
 Want to know what exactly the Terraform configuration file does?
@@ -125,7 +125,7 @@ terraform init -upgrade
 terraform apply -var-file terraform.tfvars
 ```
 
-## Validate Event Ingestion
+### Validate Event Ingestion
 
 After a few minutes, we should have the proxy container up and running. We can check and copy the endpoint URL by running:
 
@@ -163,10 +163,8 @@ By default you should see around .5 messages per second streaming into the topic
 
 
 
+## Lab 2. Data ingestion
 
-
-
-## Bring raw data to BigQuery
 
 Now that your data ingestion is working correctly we move on to set up your processing infrastructure. Data processing infrastructures often have vastly diverse technical and business requirements. We will find the right setup for three completely different settings.
 
@@ -174,11 +172,15 @@ Now that your data ingestion is working correctly we move on to set up your proc
 
 To start out we aim for rapid iteration. We plan using BigQuery as Data Lakehouse - Combining Data Warehouse and Data Lake.
 
-To implement our lean ELT pipeline we need:
+### Part 1. Bring raw data to BigQuery (EL) - Pub/Sub BigQuery
+
+To implement our lean EL pipeline we need:
 
 * BigQuery Dataset
 * BigQuery Table
 * Pub/Sub BigQuery Subscription
+
+Pub/Sub enables real-time streaming into BigQuery. Learn more about [Pub/Sub integrations with BigQuery](https://cloud.google.com/pubsub/docs/bigquery).
 
 Start with creating a BigQuery Dataset named `data_journey`. The Dataset should contain a table named `pubsub_direct`.
 
@@ -203,7 +205,7 @@ To create the Pub/Sub subscription in the console run:
 gcloud pubsub subscriptions create dj_subscription_bq_direct --topic=dj-pubsub-topic --bigquery-table=$GCP_PROJECT:data_journey.pubsub_direct
 ```
 
-## Validate ELT Pipeline implementation
+### Validate ELT Pipeline implementation
 
 You can now stream website interaction data points through your Cloud Run Proxy Service, Pub/Sub Topic & Subscription all the way up to your BigQuery destination table.
 
@@ -217,7 +219,9 @@ to direct an artificial click stream at your pipeline. If your datastream is sti
 
 After a minute or two you should find your BigQuery destination table populated with data points. The metrics of Pub/Sub topic and Subscription should also show the throughput. Take a specific look at the un-acknowledged message metrics in Pub/Sub. If everything works as expected it should be 0.
 
-## Part 2: ETL(Extract Transform Load) - Cloud Run
+
+
+## Part 2: ETL (Extract Transform Load) - Cloud Run
 
 ELT is a relatively new concept. Cheap availability of Data Warehouses allows efficient on-demand transformations. That saves storage and increases flexibility. All you have to manage are queries, not transformed datasets. And you can always go back to data in it's raw form.
 
@@ -235,7 +239,7 @@ To start off, let's reference the working directory:
 cd ETL/CloudRun
 ```
 
-## ETL Step 1
+### ETL Step 1
 
 First component of our lightweight ETL pipeline is a BigQuery Table named `cloud_run`. The BigQuery Table should make use of the schema file `./schema.json`. The processing service will stream the transformed data into this table.
 
@@ -253,9 +257,16 @@ Second, let's set up your Cloud Run Processing Service. `./ETL/Cloud Run` contai
 
 Inspect the `Dockerfile` to understand how the container will be build.
 
-`main.py` defines the web server that handles the incoming data points. Inspect `main.py` to understand the web server logic.
+`main.py` defines the web server that handles the incoming data points. Inspect `main.py` to understand the web server logic. 
+
+We can use Gemini Code Assist:
+
+1. Open Gemini Code Assist <img style="vertical-align:middle" src="https://www.gstatic.com/images/branding/productlogos/gemini/v4/web-24dp/logo_gemini_color_1x_web_24dp.png" width="8px" height="8px"> on the left hand side.
+2. Insert ``Please explain what main.py file do?`` into the Gemini prompt.
 
 Make sure to replace the required variables in `config.py` so you can access them safely in `main.py`.
+
+Open `~/data-journey/ETL/CloudRun/config.py` <walkthrough-editor-open-file filePath="~/data-journey/ETL/CloudRun/config.py">by clicking here</walkthrough-editor-open-file> and add your own variables.
 
 Once the code is completed build the container from `./ETL/Cloud Run` into a new [Container Repository](https://cloud.google.com/artifact-registry/docs/overview) named `data-processing-service`.
 
@@ -277,7 +288,7 @@ NAME: gcr.io/<project-id>/data-processing-service
 Only listing images in gcr.io/<project-id>. Use --repository to list images in other repositories.
 ```
 
-## ETL Step 3
+### ETL Step 3
 
 Next step is to deploy a new cloud run processing service based on the container you just build to your Container Registry.
 
@@ -285,15 +296,17 @@ Next step is to deploy a new cloud run processing service based on the container
 gcloud run deploy dj-run-service-data-processing --image gcr.io/$GCP_PROJECT/data-processing-service:latest --region=europe-west1 --allow-unauthenticated
 ```
 
-## ETL Step 4
+### ETL Step 4
 
 Define a Pub/Sub subscription named `dj-subscription_cloud_run` that can forward incoming messages to an endpoint.
 
 You will need to create a Push Subscription to the Pub/Sub topic we already defined.
 
 Enter the displayed URL of your processing in `./config_env.sh` as `PUSH_ENDPOINT` & reset the environment variables.
+Open `~/data-journey/Data-Simulator/config_env.sh` <walkthrough-editor-open-file filePath="~/data-journey/Data-Simulator/config_env.sh">by clicking here</walkthrough-editor-open-file> and add your PUSH_ENDPOINT.
 
 ```bash
+cd ~/data-journey/Data-Simulator/
 source config_env.sh
 ```
 
@@ -322,7 +335,11 @@ to direct an artificial click stream at your pipeline. No need to reinitialize i
 
 After a minute or two you should find your BigQuery destination table populated with data points. The metrics of Pub/Sub topic and Subscription should also show the throughput. Take a specific look at the un-acknowledged message metrics in Pub/Sub. If everything works as expected it should be 0.
 
-## Part 2: ETL(Extract Transform Load) - Dataflow
+
+
+
+
+## Part 3: ETL (Extract Transform Load) - Dataflow
 
 Cloud Run works smooth to apply simple data transformations. On top of that it scales to 0. So why not stop right there?
 
@@ -332,46 +349,35 @@ For extremely latency sensitive applications, and cases in which aggregations or
 
 Dataflow is a great tool to integrate into your pipeline for high volume data streams with complex transformations and aggregations. It is based on the open-source data processing framework Apache Beam.
 
-For the challenges below let's reference the working directory:
+For the lab below let's reference the working directory:
 
 ```bash
 cd ETL/Dataflow
 ```
 
-## Challenge 1 (Dataflow)
+###  Dataflow - Step 1
 
 First component of our dataflow ETL pipeline is a BigQuery Table named `dataflow`, and `data_journey` dataset if not previously created.
 
 The BigQuery Table should make use of the schema file: `user_pseudo_id:STRING` and `event_count:INTEGER`.
 
-The processing service will stream the transformed data into this table.
+The processing service will stream the transformed data into this table. Read about [Big Query documentation](https://cloud.google.com/bigquery/docs/tables).
 
-**Hint:** The [Big Query documentation](https://cloud.google.com/bigquery/docs/tables) might be helpful to follow.
-
-<walkthrough-info-message>**The solution will be shown on the next page**</walkthrough-info-message>
-
-Second component is the connection between Pub/Sub topic and Dataflow job.
-
-Define a Pub/Sub subscription named `dj_subscription_dataflow` that can serve this purpose. You will define the actual dataflow job in the next step.
-
-**Hint:** Read about [types of subscriptions](https://cloud.google.com/pubsub/docs/subscriber) and [how to create them](https://cloud.google.com/pubsub/docs/create-subscription#create_subscriptions).
-
-<walkthrough-info-message>**The solution will be shown on the next page**</walkthrough-info-message>
-
-## Challenge 1 (Dataflow) solution
-
-Here is the solution for the previous page.
-
-**BigQuery Table:**
+Ok, let's create teh Bigquery table:
 
 ```bash
 bq --location=$GCP_REGION mk --dataset $GCP_PROJECT:data_journey
 bq mk --location=$GCP_REGION --table $GCP_PROJECT:data_journey.dataflow user_pseudo_id:STRING,event_count:INTEGER
 ```
 
-**Pub/Sub Subscription:**
 
-You will need to create a Pull Subscription to the Pub/Sub topic we already defined. This is a fundamental difference to the Push subscriptions we encountered in the previous two examples. Dataflow will pull the data points from the queue independently, depending on worker capacity.
+Second component is the connection between Pub/Sub topic and Dataflow job.
+
+Define a Pub/Sub subscription named `dj_subscription_dataflow` that can serve this purpose. You will define the actual dataflow job in the next step.
+
+Read about [types of subscriptions](https://cloud.google.com/pubsub/docs/subscriber) and [how to create them](https://cloud.google.com/pubsub/docs/create-subscription#create_subscriptions).
+
+We will need to create a Pull Subscription to the Pub/Sub topic we already defined. This is a fundamental difference to the Push subscriptions we encountered in the previous two examples. Dataflow will pull the data points from the queue independently, depending on worker capacity.
 
 Use this command:
 
@@ -383,7 +389,8 @@ OR
 
 read how it can be [defined via the console](https://cloud.google.com/pubsub/docs/create-subscription#pull_subscription).
 
-## Challenge 2 (Dataflow)
+
+### Dataflow - Step 2
 
 Finally, all we are missing is your Dataflow job to apply transformations, aggregations and connect Pub/Sub queue with BigQuery Sink.
 
@@ -391,91 +398,38 @@ Finally, all we are missing is your Dataflow job to apply transformations, aggre
 
 You need to apply custom aggregations on the incoming data. That means you need to create a dataflow job based on a [flex-template](https://cloud.google.com/dataflow/docs/guides/templates/using-flex-templates).
 
-Find & examine the pipeline code in `.ETL/Dataflow/dataflow_processing.py`.
+Find & examine the pipeline code in `.ETL/Dataflow/dataflow_processing.py`. Use Gemini to get explanations:
 
-The pipeline is missing some code snippets. You will have to add three code snippets in `streaming_pipeline()`.
+1. Open Gemini Code Assist <img style="vertical-align:middle" src="https://www.gstatic.com/images/branding/productlogos/gemini/v4/web-24dp/logo_gemini_color_1x_web_24dp.png" width="8px" height="8px"> on the left hand side.
+2. Insert ``What does dataflow_processing.py do?`` into the Gemini prompt.
+
 
 You need to design a pipeline that calculates number of events per user per 1 minute (they don't have to be unique). Ideally, we would like to see per one 1 hour, but for demonstration purposese we will shorten to 1 minute.
 
 The aggregated values should be written into your BigQuery table.
 
-Before you start coding replace the required variables in `config.py` so you can access them safely in `dataflow_processing.py`.
+Before you need to replace the required variables in `config.py` so you can access them safely in `dataflow_processing.py`.
+
+Open `~/data-journey/ETL/Dataflow/config.py` <walkthrough-editor-open-file filePath="~/data-journey/ETL/Dataflow/config.py">by clicking here</walkthrough-editor-open-file> and add your project and location.
+
+Before moving to the next step take a few minutes to understand the dataflow processing.
 
 
-**Hint Read from PubSub Transform:** The [Python Documentation](https://beam.apache.org/releases/pydoc/current/apache_beam.io.gcp.pubsub.html) should help.
 
-<walkthrough-info-message>**The solution will be shown on the next page**</walkthrough-info-message>
-
-
-**Hint Data Windowing:** This is a challenging one. There are multiple ways of solving this. Easiest is a [FixedWindows](https://beam.apache.org/documentation/programming-guide/#using-single-global-window) with [AfterProcessingTime trigger](https://beam.apache.org/documentation/programming-guide/#event-time-triggers).
-
-<walkthrough-info-message>**The solution will be shown on the next page**</walkthrough-info-message>
-
-
-**Hint Counting the events per user:** Check out some [core beam transforms](https://beam.apache.org/documentation/programming-guide/#core-beam-transforms).
-
-<walkthrough-info-message>**The solution will be shown on the next page**</walkthrough-info-message>
-
-## Challenge 2 (Dataflow) solution
-
-Here is the solution for the previous page.
-
-**Read from PubSub Transform**
-
-```
-    json_message = (p
-                    # Listining to Pub/Sub.
-                    | "Read Topic" >> ReadFromPubSub(subscription=subscription)
-                    # Parsing json from message string.
-                    | "Parse json" >> beam.Map(json.loads))
-```
-
-**Data Windowing**
-
-```
-    fixed_windowed_items = (extract
-                          | "CountEventsPerMinute" >> beam.WindowInto(beam.window.FixedWindows(60),
-                                                                trigger=trigger.AfterWatermark(early=trigger.AfterProcessingTime(60), late=trigger.AfterCount(1)),
-                                                                accumulation_mode=trigger.AccumulationMode.DISCARDING)
-                       )
-```
-
-**Counting events per user**
-
-```
-    number_events =  (fixed_windowed_items | "Read" >> beam.Map(lambda x: (x["user_pseudo_id"], 1))
-                                        | "Grouping users" >> beam.GroupByKey()
-                                        | "Count" >> beam.CombineValues(sum)
-                                        | "Map to dictionaries" >> beam.Map(lambda x: {"user_pseudo_id": x[0], "event_count": int(x[1])})) 
-```
-
-Before finishing this section make sure to update the project_id and region in `.ETL/Dataflow/config.py`.
-
-## Challenge 3 (Dataflow)
+### Dataflow - Step 3
 
 To create a flex-template we first need to build the pipeline code as container in the Container Registry.
 
-Build the Dataflow folder content as container named `beam-processing-flex-template` to your Container Registry.
+So we need to build the Dataflow folder content as container named `beam-processing-flex-template` to your Container Registry.
 
-<walkthrough-info-message>**The solution will be shown on the next page**</walkthrough-info-message>
+Checkout the [docs](https://cloud.google.com/sdk/gcloud/reference/dataflow/flex-template/build) on how to build a dataflow flex-template.
 
-Create a Cloud Storage Bucket named `gs://<project-id>-gaming-events`. Create a Dataflow flex-template based on the built container and place it in your new GCS bucket.
-
-**Hint:** Checkout the [docs](https://cloud.google.com/sdk/gcloud/reference/dataflow/flex-template/build) on how to build a dataflow flex-template.
-
-<walkthrough-info-message>**The solution will be shown on the next page**</walkthrough-info-message>
-
-## Challenge 3 (Dataflow) solution
-
-Here is the solution for the previous page.
-
-**Dataflow folder content to Container Registry**
+Create a Cloud Storage Bucket named `gs://<project-id>-gaming-events` and create a Dataflow flex-template based on the built container and place it in your new GCS bucket:
 
 ```bash
 gcloud builds submit --tag gcr.io/$GCP_PROJECT/beam-processing-flex-template
 ```
 
-**Dataflow flex template**
 
 Create a new bucket by running:
 
@@ -489,25 +443,20 @@ Build the flex-template into your bucket using:
 gcloud dataflow flex-template build gs://$GCP_PROJECT-gaming-events/df_templates/dataflow_template.json --image=gcr.io/$GCP_PROJECT/beam-processing-flex-template --sdk-language=PYTHON
 ```
 
-## Challenge 4 (Dataflow)
+### Dataflow - Step 4
 
 Run a Dataflow job based on the flex-template you just created.
 
 The job creation will take 5-10 minutes.
 
-**Hint:** The [documentation on the flex-template run command](https://cloud.google.com/sdk/gcloud/reference/dataflow/flex-template/run) should help.
+Check the [documentation on the flex-template run command](https://cloud.google.com/sdk/gcloud/reference/dataflow/flex-template/run).
 
-<walkthrough-info-message>**The solution will be shown on the next page**</walkthrough-info-message>
-
-## Challenge 4 (Dataflow) solution
-
-Here is the solution for the previous page.
 
 ```bash
 gcloud dataflow flex-template run dataflow-job --template-file-gcs-location=gs://$GCP_PROJECT-gaming-events/df_templates/dataflow_template.json --region=europe-west1 --service-account-email="data-journey-pipeline@$GCP_PROJECT.iam.gserviceaccount.com" --max-workers=1 --network=terraform-network
 ```
 
-## Validate Dataflow ETL pipeline implementation
+Validate Dataflow ETL pipeline implementation
 
 You can now stream website interaction data points through your Cloud Run Proxy Service, Pub/Sub Topic & Subscription, Dataflow job and all the way up to your BigQuery destination table.
 
@@ -520,6 +469,14 @@ python3 synth_json_stream.py --endpoint=$ENDPOINT_URL --bucket=$BUCKET --file=$F
 to direct an artificial click stream at your pipeline. No need to reinitialize if you still have the clickstream running from earlier.
 
 After a minute or two you should find your BigQuery destination table populated with data points. The metrics of Pub/Sub topic and Subscription should also show the throughput. Take a specific look at the un-acknowledged message metrics in Pub/Sub. If everything works as expected it should be 0.
+
+
+
+
+
+
+
+
 
 ## Part 2.1: Extract Load Transform (ELT)
 
