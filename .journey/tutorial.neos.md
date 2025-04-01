@@ -35,6 +35,8 @@ By the end of this workshop, you will learn how to:
 
 ## Working with labs
 
+
+
 You can insert commands into the terminal using the following button on top of each code line in the tutorial:
 <walkthrough-cloud-shell-icon></walkthrough-cloud-shell-icon>. The button will automatically open the terminal.
 Please make sure you are using the terminal of the IDE.
@@ -78,7 +80,14 @@ First, we need to enable some Google Cloud Platform (GCP) services. Enabling GCP
 
 To get started, click **Start**
 
+
+
+
  ##  Lab 1: Environment Setup
+
+
+
+
 
 <walkthrough-tutorial-duration duration="20"></walkthrough-tutorial-duration>
 <walkthrough-tutorial-difficulty difficulty="2"></walkthrough-tutorial-difficulty>
@@ -86,8 +95,7 @@ To get started, click **Start**
 Let's build the first step in the Data Journey.
 In this lab we will set up your environment and set up a messaging stream for our data.
 
-We have to make sure your GCP project is prepared:
-
+We have to make sure your GCP project is prepared.
 Clone the github repo we'll be using in this walkthrough:
 
 ```bash
@@ -158,7 +166,11 @@ After a minute or two validate that your solution is working by inspecting the [
 By default you should see around .5 messages per second streaming into the topic.
 
 
+
+
  ## Lab 2. Data ingestion
+
+
 
 
 Now that your data ingestion is working correctly we move on to set up your processing infrastructure. Data processing infrastructures often have vastly diverse technical and business requirements. We will find the right setup for three completely different settings.
@@ -167,7 +179,9 @@ Now that your data ingestion is working correctly we move on to set up your proc
 
 To start out we aim for rapid iteration. We plan using BigQuery as Data Lakehouse - Combining Data Warehouse and Data Lake.
 
+
 ### Part 1. Bring raw data to BigQuery (EL) - Pub/Sub BigQuery
+
 
 To implement our lean EL pipeline we need:
 
@@ -216,7 +230,8 @@ After a minute or two you should find your BigQuery destination table populated 
 
 
 
-## Part 2: ETL (Extract Transform Load) - Cloud Run
+### Part 2: ETL (Extract Transform Load) - Cloud Run
+
 
 ELT is a relatively new concept. Cheap availability of Data Warehouses allows efficient on-demand transformations. That saves storage and increases flexibility. All you have to manage are queries, not transformed datasets. And you can always go back to data in it's raw form.
 
@@ -234,7 +249,7 @@ To start off, let's reference the working directory:
 cd ETL/CloudRun
 ```
 
-### ETL Step 1
+#### ETL - Step 1
 
 First component of our lightweight ETL pipeline is a BigQuery Table named `cloud_run`. The BigQuery Table should make use of the schema file `./schema.json`. The processing service will stream the transformed data into this table.
 
@@ -246,7 +261,7 @@ bq mk --location=europe-west1 --table $GCP_PROJECT:data_journey.cloud run ./sche
 
 OR follow the documentation on how to [create a BigQuery table with schema through the console](https://cloud.google.com/bigquery/docs/tables#console).
 
-### ETL Step 2
+#### ETL - Step 2
 
 Second, let's set up your Cloud Run Processing Service. `./ETL/Cloud Run` contains all the necessary files.
 
@@ -283,7 +298,7 @@ NAME: gcr.io/<project-id>/data-processing-service
 Only listing images in gcr.io/<project-id>. Use --repository to list images in other repositories.
 ```
 
-### ETL Step 3
+#### ETL - Step 3
 
 Next step is to deploy a new cloud run processing service based on the container you just build to your Container Registry.
 
@@ -291,7 +306,7 @@ Next step is to deploy a new cloud run processing service based on the container
 gcloud run deploy dj-run-service-data-processing --image gcr.io/$GCP_PROJECT/data-processing-service:latest --region=europe-west1 --allow-unauthenticated
 ```
 
-### ETL Step 4
+#### ETL - Step 4
 
 Define a Pub/Sub subscription named `dj-subscription_cloud_run` that can forward incoming messages to an endpoint.
 
@@ -313,11 +328,11 @@ gcloud pubsub subscriptions create dj-subscription_cloud_run \
     --push-endpoint=$PUSH_ENDPOINT
 ```
 
-OR
+OR read here: [defined via the console](https://cloud.google.com/pubsub/docs/create-subscription#pubsub_create_push_subscription-console).
 
-read it can be [defined via the console](https://cloud.google.com/pubsub/docs/create-subscription#pubsub_create_push_subscription-console).
 
-## Validate lightweight ETL pipeline implementation
+#### Validate lightweight ETL pipeline implementation
+
 
 You can now stream website interaction data points through your Cloud Run Proxy Service, Pub/Sub Topic & Subscription, Cloud Run Processing and all the way up to your BigQuery destination table.
 
@@ -334,7 +349,9 @@ After a minute or two you should find your BigQuery destination table populated 
 
 
 
-## Part 3: ETL (Extract Transform Load) - Dataflow
+## Lab 3: ETL (Extract Transform Load) - Dataflow
+
+
 
 Cloud Run works smooth to apply simple data transformations. On top of that it scales to 0. So why not stop right there?
 
@@ -413,6 +430,7 @@ Before moving to the next step take a few minutes to understand the dataflow pro
 
 ### Dataflow - Step 3
 
+
 To create a flex-template we first need to build the pipeline code as container in the Container Registry.
 
 So we need to build the Dataflow folder content as container named `beam-processing-flex-template` to your Container Registry.
@@ -440,6 +458,7 @@ gcloud dataflow flex-template build gs://$GCP_PROJECT-gaming-events/df_templates
 
 ### Dataflow - Step 4
 
+
 Run a Dataflow job based on the flex-template you just created.
 
 The job creation will take 5-10 minutes.
@@ -451,7 +470,7 @@ Check the [documentation on the flex-template run command](https://cloud.google.
 gcloud dataflow flex-template run dataflow-job --template-file-gcs-location=gs://$GCP_PROJECT-gaming-events/df_templates/dataflow_template.json --region=europe-west1 --service-account-email="data-journey-pipeline@$GCP_PROJECT.iam.gserviceaccount.com" --max-workers=1 --network=terraform-network
 ```
 
-Validate Dataflow ETL pipeline implementation
+#### Validate Dataflow ETL pipeline implementation
 
 You can now stream website interaction data points through your Cloud Run Proxy Service, Pub/Sub Topic & Subscription, Dataflow job and all the way up to your BigQuery destination table.
 
@@ -470,10 +489,9 @@ After a minute or two you should find your BigQuery destination table populated 
 
 
 
+## Lab 4: Extract Load Transform (ELT)
 
 
-
-## Part 2.1: Extract Load Transform (ELT)
 
 In comparison to ETL there also exists a process called ELT. This can be used if the e.g. the transformations to be done on the data are not as memory critical and could be done after loading the data into the destination format & location.
 
@@ -481,7 +499,11 @@ If you want to explore this further we have curated some code in the following [
 
 Otherwise you can skip this part and continue on the next page.
 
-## Part 3: Change Data Capture (CDC)
+
+
+## Lab 5: Change Data Capture (CDC)
+
+
 
 Datastream is a serverless and easy-to-use Change Data Capture (CDC) and replication service that allows you to synchronize data across heterogeneous databases, storage systems, and applications reliably and with minimal latency. In this lab you’ll learn how to replicate data changes from your OLTP workloads into BigQuery, in real time.
 
@@ -507,7 +529,7 @@ git clone https://github.com/NucleusEngineering/data-journey.git
 cd data-journey/CDC
 ```
 
-## Set up cloud environment
+### Set up cloud environment
 
 Initilize your account and project
 
@@ -536,7 +558,7 @@ Set compute zone
 gcloud config set compute/zone us-central1-f
 ```
 
-## Deploy using Terraform
+### Deploy using Terraform
 
 Use Terraform to deploy the following services and networking resources defined in the `main.tf` file
 
@@ -599,7 +621,7 @@ google_compute_network.vpc_network: Creating...
 Apply complete! Resources: 5 added, 0 changed, 0 destroyed.
 ```
 
-## Import a SQL file into MySQL
+### Import a SQL file into MySQL
 
 Next, you will copy the `create_mysql.sql` file below into the Cloud Storage bucket you created above, make the file accessible to your Cloud SQL service account, and import the SQL command into your database.
 
@@ -628,7 +650,7 @@ gsutil iam ch serviceAccount:${SERVICE_ACCOUNT}:objectViewer gs://${project_id}
 gcloud sql import sql mysql gs://${project_id}/resources/create_mysql.sql --quiet
 ```
 
-## Create Datastream resources
+### Create Datastream resources
 
 In the Cloud Console UO, navigate to Datastream then click Enable to enable the Datastream AP.
 
@@ -644,7 +666,7 @@ My SQL connection profile:
 
 Create stream by selecting MyQL and BigQuery connection profiles, and make sure to mark the tables you want to replicate (we will only replicate the datastream-datajourney database), and finally run validation, and create and start the stream.
 
-## View the data in BiqQuery
+### View the data in BiqQuery
 
 View these tables in the BigQuery UI.
 
@@ -680,7 +702,7 @@ gsutil iam ch serviceAccount:${SERVICE_ACCOUNT}:objectViewer gs://${project_id}
 gcloud sql import sql mysql gs://${project_id}/resources/${SQL_FILE} --quiet
 ```
 
-## Verify updates in BigQuery
+### Verify updates in BigQuery
 
 Run the query below to verify data changes in BiqQuery:
 
@@ -693,7 +715,7 @@ LIMIT
  100
 ```
 
-## Terraform Destroy
+### Terraform Destroy
 
 Use Terraform to destroy all resources
 
@@ -701,7 +723,7 @@ Use Terraform to destroy all resources
 terraform destroy
 ```
 
-## Machine Learning Datathon
+## Lab 6. Machine Learning Datathon
 
 Now that we learned how to ingest data into BigQuery from PubSub Messages and transform them via ETL, let's continue with the [next step in the end-to-end data journey](https://github.com/NucleusEngineering/data-journey/blob/main/rsc/architecture.png): Getting insights from data via Machine Learning.
 
