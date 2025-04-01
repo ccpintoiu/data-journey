@@ -31,54 +31,89 @@ By the end of this workshop, you will learn how to:
 * Synchronize the data in MySQL and BigQuery **(/CDC)**
 * Train ML model Using BigQueryML and automate your ML workflow using Vertex ML Pipelines **(/ML)**
 
-## Project setup
+### Working with labs
 
-Before starting on our data journey, we need to select or create a Google Cloud Project.
+You can insert commands into the terminal using the following button on top of each code line in the tutorial:
+<walkthrough-cloud-shell-icon></walkthrough-cloud-shell-icon>. The button will automatically open the terminal.
+Please make sure you are using the terminal of the IDE.
 
-GCP organizes resources into projects. This allows you to
-collect all of the related resources for a single application in one place.
+Let's try:
 
-Begin by creating a new project or selecting an existing project for this
-tutorial.
+```bash
+echo "I'm ready to get started."
+```
 
-For details, see
-[Creating a project](https://cloud.google.com/resource-manager/docs/creating-managing-projects#creating_a_project).
+Execute by pressing the return key in the terminal that has been opened in the lower part of your screen.
 
-### Turn on Google Cloud APIs
 
-Enable the following Google Cloud APIs:
+### Enable services
+
+First, we need to enable some Google Cloud Platform (GCP) services. Enabling GCP services is necessary to access and use the resources and capabilities associated with those services. Each GCP service provides a specific set of features for managing cloud infrastructure, data, AI models, and more. Enabling them takes a few minutes.
 
 <walkthrough-enable-apis apis=
-  "compute.googleapis.com,
-  cloudbuild.googleapis.com, artifactregistry.googleapis.com, 
-  dataflow.googleapis.com, run.googleapis.com, pubsub.googleapis.com, serviceusage.googleapis.com, bigquery.googleapis.com, containerregistry.googleapis.com">
+  "storage-component.googleapis.com,
+  run.googleapis.com,
+  dataflow.googleapis.com,
+  containerregistry.googleapis.com,
+  notebooks.googleapis.com,
+  serviceusage.googleapis.com,
+  cloudresourcemanager.googleapis.com,
+  pubsub.googleapis.com,
+  compute.googleapis.com,
+  metastore.googleapis.com,
+  datacatalog.googleapis.com,
+  bigquery.googleapis.com,
+  dataplex.googleapis.com,
+  datalineage.googleapis.com,
+  dataform.googleapis.com,
+  dataproc.googleapis.com,
+  bigqueryconnection.googleapis.com,
+  aiplatform.googleapis.com,
+  cloudbuild.googleapis.com,
+  cloudaicompanion.googleapis.com,
+  artifactregistry.googleapis.com">
 </walkthrough-enable-apis>
 
 To get started, click **Start**
 
-## Part 1: Data-Simulator
+
+## Lab 1: Environment Setup
 
 <walkthrough-tutorial-duration duration="60"></walkthrough-tutorial-duration>
 <walkthrough-tutorial-difficulty difficulty="3"></walkthrough-tutorial-difficulty>
 
-Let's build the first step in the Data Journey by setting up a messaging stream for our data.
+Let's build the first step in the Data Journey.
+In this lab we will set up your environment and set up a messaging stream for our data.
 
-### Environment Preparation
-
-We have to make sure your GCP project is prepared by:
+We have to make sure your GCP project is prepared:
 
 Clone the github repo we'll be using in this walkthrough.
 
 ```bash
 git clone https://github.com/NucleusEngineering/data-journey
 cd data-journey/Data-Simulator
-``` 
+```
+We will be using Terraform to provision infrastructure, resources, setup network, Service Account and Permissions. 
+In addition, we will extracts a sample dataset from a public BigQuery table, build and deploy a sample app and create a Pub/Sub topic.
 
-<walkthrough-info-message>Open Cloud Shell Editor and change the project id in `./terraform.tfvars` to your own project id.</walkthrough-info-message>
+Want to know what exactly the Terraform configuration file does?
+
+Let's ask Gemini:
+
+1. Open Gemini Code Assist <img style="vertical-align:middle" src="https://www.gstatic.com/images/branding/productlogos/gemini/v4/web-24dp/logo_gemini_color_1x_web_24dp.png" width="8px" height="8px"> on the left hand side.
+2. Insert ``What main.tf file do?`` into the Gemini prompt.
+
+
+First, we need to change the terraform variable file. You can open files directly from this tutorial:
+Open `./terraform.tfvars` <walkthrough-editor-open-file filePath="Data-Simulator/terraform.tfvars">by clicking here</walkthrough-editor-open-file> and add your own project id.
+
+❗ Please do not include any whitespaces when setting these variablers.
+<!---
 ```bash
 nano terraform.tfvars
 ```
 Change the ID and click `ctrl+S` and `ctrl+X` to save and return to the shell.
+-->
 
 Build the basic permissions & networking setup via terraform apply.
 
@@ -92,11 +127,14 @@ terraform apply -var-file terraform.tfvars
 
 ## Validate Event Ingestion
 
-Open Cloud Shell Editor and enter your GCP Project ID, the GCP Region and the endpoint URL in `./config_env.sh`. The endpoint URL refers to the URL of the proxy container deployed to Cloud Run with the streaming data input. To find it, either find the service in the Cloud Run UI, or run the following gcloud command and copy the URL:
+After a few minutes, we should have the proxy container up and running. We can check and copy the endpoint URL by running:
 
 ```bash
 gcloud run services list
 ```
+The endpoint URL refers to the URL of the proxy container deployed to Cloud Run with the streaming data input. 
+We need to add GCP Project ID, the GCP Region and the endpoint URL in `./config_env.sh`<walkthrough-editor-open-file filePath="Data-Simulator/config_env.sh">by clicking here</walkthrough-editor-open-file>.
+
 
 After, enter the variables in the config file. You can open it
 <walkthrough-editor-open-file filePath="config_env.sh">
@@ -121,6 +159,12 @@ python3 synth_json_stream.py --endpoint=$ENDPOINT_URL --bucket=$BUCKET --file=$F
 After a minute or two validate that your solution is working by inspecting the [metrics](https://cloud.google.com/pubsub/docs/monitor-topic) of your Pub/Sub topic. Of course the topic does not have any consumers yet. Thus, you should find that messages are queuing up.
 
 By default you should see around .5 messages per second streaming into the topic.
+
+
+
+
+
+
 
 ## Bring raw data to BigQuery
 
