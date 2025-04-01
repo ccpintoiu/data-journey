@@ -2,7 +2,7 @@
   <meta name="title" content="Welcome to Cloud Native Data Journey with Google Cloud!" />
   <meta name="description" content="This walkthrough describes how to build an end-to-end data pipeline, from collection, over transformation and up to activation of the data." />
   <meta name="keywords" content="data,bigquery,dataflow,cloudrun,etl,elt" />
-  <meta name="component_id" content="1163696" /> #
+  <meta name="component_id" content="1163696" />
 </walkthrough-metadata>
 
 # Cloud Native Data Journey on Google Cloud
