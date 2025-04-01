@@ -79,8 +79,8 @@ To get started, click **Start**
 
 ## Lab 1: Environment Setup
 
-<walkthrough-tutorial-duration duration="60"></walkthrough-tutorial-duration>
-<walkthrough-tutorial-difficulty difficulty="3"></walkthrough-tutorial-difficulty>
+<walkthrough-tutorial-duration duration="20"></walkthrough-tutorial-duration>
+<walkthrough-tutorial-difficulty difficulty="2"></walkthrough-tutorial-difficulty>
 
 Let's build the first step in the Data Journey.
 In this lab we will set up your environment and set up a messaging stream for our data.
@@ -125,7 +125,7 @@ terraform init -upgrade
 terraform apply -var-file terraform.tfvars
 ```
 
-### Validate Event Ingestion
+ #### Validate Event Ingestion
 
 After a few minutes, we should have the proxy container up and running. We can check and copy the endpoint URL by running:
 
@@ -251,7 +251,7 @@ bq mk --location=europe-west1 --table $GCP_PROJECT:data_journey.cloud run ./sche
 
 OR follow the documentation on how to [create a BigQuery table with schema through the console](https://cloud.google.com/bigquery/docs/tables#console).
 
-## ETL Step 2
+### ETL Step 2
 
 Second, let's set up your Cloud Run Processing Service. `./ETL/Cloud Run` contains all the necessary files.
 
