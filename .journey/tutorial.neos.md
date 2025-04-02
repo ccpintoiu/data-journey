@@ -489,17 +489,16 @@ After a minute or two you should find your BigQuery destination table populated 
 
 
 
-## Lab 4: Extract Load Transform (ELT)
+## Lab 4: Dataform (ELT)
 
-In comparison to ETL, there's also a process called ELT. ELT can be used if the data transformations are not as memory critical and can be performed after loading the data into the target system and location.
 
-If you want to explore this further we have curated some code in the following [repository](https://github.com/NucleusEngineering/data-journey/tree/tutorial/ELT).
-
-Otherwise you can skip this part and continue on the next page.
 <walkthrough-tutorial-duration duration="30"></walkthrough-tutorial-duration>
 {{ author('Cosmin Pintoiu', 'https://www.linkedin.com/in/cosmin-pintoiu/') }}
 <walkthrough-tutorial-difficulty difficulty="3"></walkthrough-tutorial-difficulty>
-<bootkon-cloud-shell-note/>
+
+
+In comparison to ETL, there's also a process called ELT. ELT can be used if the data transformations are not as memory critical and can be performed after loading the data into the target system and location.
+
 
 During this lab, you gather user feedback to assess the impact of model adjustments on real-world use (prediction), ensuring that our fraud detection system effectively balances accuracy with user satisfaction. 
 * Use Dataform, BigQuery and Gemini to Perform sentiment analysis of customer feedback.
