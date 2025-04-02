@@ -491,9 +491,7 @@ After a minute or two you should find your BigQuery destination table populated 
 
 ## Lab 4: Extract Load Transform (ELT)
 
-
-
-In comparison to ETL there also exists a process called ELT. This can be used if the e.g. the transformations to be done on the data are not as memory critical and could be done after loading the data into the destination format & location.
+In comparison to ETL, there's also a process called ELT. ELT can be used if the data transformations are not as memory critical and can be performed after loading the data into the target system and location.
 
 If you want to explore this further we have curated some code in the following [repository](https://github.com/NucleusEngineering/data-journey/tree/tutorial/ELT).
 
@@ -507,7 +505,7 @@ Otherwise you can skip this part and continue on the next page.
 
 Datastream is a serverless and easy-to-use Change Data Capture (CDC) and replication service that allows you to synchronize data across heterogeneous databases, storage systems, and applications reliably and with minimal latency. In this lab you’ll learn how to replicate data changes from your OLTP workloads into BigQuery, in real time.
 
-In this hands-on lab you’ll deploy the below mentioned resources all at once via terrafrom or individually. Then, you will create and start a Datastream stream for replication and CDC.
+This hands-on lab will guide you through deploying the resources mentioned below, either all at once via Terraform or separately. You will then proceed to create and start a Datastream stream for replication and CDC (Change Data Capture).
 
 What you’ll do:
 
@@ -531,7 +529,7 @@ cd data-journey/CDC
 
 ### Set up cloud environment
 
-Initilize your account and project
+Initialize your account and project
 
 <walkthrough-info-message>If you are using the Google Cloud Shell you can skip this step of initalization. Continue with setting the project.</walkthrough-info-message>
 
@@ -664,7 +662,7 @@ My SQL connection profile:
 * connectivity method: IP allowlisting BigQuery connection profile:
 * connection profile ID
 
-Create stream by selecting MyQL and BigQuery connection profiles, and make sure to mark the tables you want to replicate (we will only replicate the datastream-datajourney database), and finally run validation, and create and start the stream.
+Create stream by selecting MyQL and BigQuery connection profiles, and make sure to mark the tables you want to replicate (we will only replicate the datastream-datajourney database), and finally run validation, then create and start the stream.
 
 ### View the data in BiqQuery
 
