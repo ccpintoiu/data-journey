@@ -1,7 +1,8 @@
+ ## Lab 4. Dataform (ELT)
+
 <walkthrough-tutorial-duration duration="30"></walkthrough-tutorial-duration>
 {{ author('Cosmin Pintoiu', 'https://www.linkedin.com/in/cosmin-pintoiu/') }}
 <walkthrough-tutorial-difficulty difficulty="3"></walkthrough-tutorial-difficulty>
-<bootkon-cloud-shell-note/>
 
 During this lab, you gather user feedback to assess the impact of model adjustments on real-world use (prediction), ensuring that our fraud detection system effectively balances accuracy with user satisfaction. 
 * Use Dataform, BigQuery and Gemini to Perform sentiment analysis of customer feedback.
@@ -178,4 +179,31 @@ Notice the usage of `$ref` in line 12, of `ELT/definitions/ml_models/logistic_re
 ***
 
 ### **Execute Dataform workflows**
+
+
+
+Run the dataset creation by **Tag**. Tag allow you to just execute parts of the workflows and not the entire workflow. 
+
+1. Click on <walkthrough-spotlight-pointer locator="semantic({button 'Start execution'})">Start execution</walkthrough-spotlight-pointer> > <walkthrough-spotlight-pointer locator="text('tags')">Tags</walkthrough-spotlight-pointer> \> <walkthrough-spotlight-pointer locator="semantic({button 'Start execution'})"> Start execution</walkthrough-spotlight-pointer>
+
+2. Click on <walkthrough-spotlight-pointer locator="semantic({link 'Details'})">DETAILS</walkthrough-spotlight-pointer>
+
+    Notice the Access Denied error on BigQuery for the dataform service account `{{ DATAFORM_SA }}`
+
+3. Go to [IAM & Admin](https://console.cloud.google.com/iam-admin)
+
+4. Click on <walkthrough-spotlight-pointer locator="semantic({button 'Grant access'})">GRANT ACCESS</walkthrough-spotlight-pointer> and grant `BigQuery Data Editor , BigQuery Job User and BigQuery Connection User` to the principal `{{ DATAFORM_SA }}`.
+
+5. Click on <walkthrough-spotlight-pointer locator="semantic({button 'Save'})">SAVE</walkthrough-spotlight-pointer>
+
+  Note: If you encounter a policy update screen, just click on update.
+
+6. Go back to [Dataform](https://console.cloud.google.com/bigquery/dataform) within in BigQuery, and retry <walkthrough-spotlight-pointer locator="semantic({button 'Start execution'})">Start execution</walkthrough-spotlight-pointer> > <walkthrough-spotlight-pointer locator="text('tags')">Tags</walkthrough-spotlight-pointer> \> <walkthrough-spotlight-pointer locator="semantic({button 'Start execution'})"> Start execution</walkthrough-spotlight-pointer>. \
+Notice the execution status. It should be a success.  
+ 
+7. Lastly, go to Compiled graph and explore it.
+Go to [Dataform](https://console.cloud.google.com/bigquery/dataform)\> <walkthrough-spotlight-pointer locator="text('datajourney-repository')">datajourney-repository</walkthrough-spotlight-pointer>>`datajourney-workspace` \> <walkthrough-spotlight-pointer locator="semantic({tab 'Compiled graph tab'})">COMPILED GRAPH</walkthrough-spotlight-pointer>
+
+***
+
 
