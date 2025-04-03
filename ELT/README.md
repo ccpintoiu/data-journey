@@ -1,7 +1,7 @@
  ## Lab 4. Dataform (ELT)
 
 <walkthrough-tutorial-duration duration="30"></walkthrough-tutorial-duration>
-{{ author('Cosmin Pintoiu', 'https://www.linkedin.com/in/cosmin-pintoiu/') }}
+<!--> {{ author('Cosmin Pintoiu', 'https://www.linkedin.com/in/cosmin-pintoiu/') }} /-->
 <walkthrough-tutorial-difficulty difficulty="3"></walkthrough-tutorial-difficulty>
 
 During this lab, you gather user feedback to assess the impact of model adjustments on real-world use (prediction), ensuring that our fraud detection system effectively balances accuracy with user satisfaction. 
