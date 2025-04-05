@@ -58,7 +58,6 @@ First, we need to enable some Google Cloud Platform (GCP) services. Enabling GCP
   "storage-component.googleapis.com,
   run.googleapis.com,
   dataflow.googleapis.com,
-  containerregistry.googleapis.com,
   notebooks.googleapis.com,
   serviceusage.googleapis.com,
   cloudresourcemanager.googleapis.com,
@@ -110,8 +109,9 @@ Want to know what exactly the Terraform configuration file does?
 
 Let's ask Gemini:
 
-1. Open Gemini Code Assist <img style="vertical-align:middle" src="https://www.gstatic.com/images/branding/productlogos/gemini/v4/web-24dp/logo_gemini_color_1x_web_24dp.png" width="8px" height="8px"> on the left hand side.
-2. Insert ``What main.tf file do?`` into the Gemini prompt.
+1. Open  <walkthrough-editor-open-file filePath="~/data-journey/Data-Simulator/main.tf">`main.tf`</walkthrough-editor-open-file>.
+2. Open Gemini Code Assist <img style="vertical-align:middle" src="https://www.gstatic.com/images/branding/productlogos/gemini/v4/web-24dp/logo_gemini_color_1x_web_24dp.png" width="8px" height="8px"> on the left hand side.
+3. Insert ``What main.tf file do?`` into the Gemini prompt.
 
 
 First, we need to change the terraform variable file. You can open files directly from this tutorial:
