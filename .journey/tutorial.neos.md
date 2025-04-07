@@ -216,7 +216,7 @@ Alternatively create the [Dataset](https://cloud.google.com/bigquery/docs/datase
 To create the Pub/Sub subscription in the console run:
 
 ```bash
-gcloud pubsub subscriptions create dj_subscription_bq_direct --topic=dj-pubsub-topic --bigquery-table=$GCP_PROJECT:data_journey.pubsub_direct
+gcloud pubsub subscriptions create dj_subscription_bq_direct --topic=dj-pubsub-topic --bigquery-table=$GCP_PROJECT:data_journey.pubsub_direct --project=$GCP_PROJECT
 ```
 
 ### Validate ELT Pipeline implementation
