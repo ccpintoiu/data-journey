@@ -135,18 +135,16 @@ terraform apply -var-file terraform.tfvars
 After a few minutes, we should have the proxy container up and running. We can check and copy the endpoint URL by running:
 
 ```bash
-gcloud run services list
+gcloud run services list --project [PROJECT_ID]
 ```
 
 The endpoint URL refers to the URL of the proxy container deployed to Cloud Run with the streaming data input. 
+
 We need to add GCP Project ID, the GCP Region and the endpoint URL in `./config_env.sh`<walkthrough-editor-open-file filePath="/home/admin_/data-journey/Data-Simulator/config_env.sh">by clicking here</walkthrough-editor-open-file>.
 
 
-After, enter the variables in the config file. You can open it
-<walkthrough-editor-open-file filePath="/home/admin_/data-journey/Data-Simulator/config_env.sh">
-in the Cloud Shell Editor
-</walkthrough-editor-open-file>
-to read or edit it.
+First, enter the variables in the config file. You can open it <walkthrough-editor-open-file filePath="/home/admin_/data-journey/Data-Simulator/config_env.sh">
+in the Cloud Shell Editor </walkthrough-editor-open-file> to read or edit it.
 
 Set all necessary environment variables by running:
 
