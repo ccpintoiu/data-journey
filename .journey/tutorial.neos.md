@@ -99,8 +99,7 @@ Clone the github repo we'll be using in this walkthrough:
 
 ```bash
 cd ~
-# cd to /home/admin_
-git clone https://github.com/NucleusEngineering/data-journey
+git clone https://github.com/ccpintoiu/data-journey
 cd data-journey/Data-Simulator
 ```
 
