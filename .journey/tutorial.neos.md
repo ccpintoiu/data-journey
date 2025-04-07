@@ -261,7 +261,7 @@ That means your pipeline should scale down to 0 when unused or up to whatever is
 To start off, let's reference the working directory:
 
 ```bash
-cd ETL/CloudRun
+cd ~/data-journey/ETL/CloudRun
 ```
 
 #### ETL - Step 1
@@ -271,14 +271,14 @@ First component of our lightweight ETL pipeline is a BigQuery Table named `cloud
 Run this command:
 
 ```bash
-bq mk --location=europe-west1 --table $GCP_PROJECT:data_journey.cloud run ./schema.json
+bq mk --location=europe-west1 --table $GCP_PROJECT:data_journey.cloud_run ./schema.json
 ```
 
 OR follow the documentation on how to [create a BigQuery table with schema through the console](https://cloud.google.com/bigquery/docs/tables#console).
 
 #### ETL - Step 2
 
-Second, let's set up your Cloud Run Processing Service. `./ETL/Cloud Run` contains all the necessary files.
+Second, let's set up your Cloud Run Processing Service. `./ETL/CloudRun` contains all the necessary files.
 
 Inspect the `Dockerfile` to understand how the container will be build.
 
@@ -287,11 +287,12 @@ Inspect the `Dockerfile` to understand how the container will be build.
 We can use Gemini Code Assist:
 
 1. Open Gemini Code Assist <img style="vertical-align:middle" src="https://www.gstatic.com/images/branding/productlogos/gemini/v4/web-24dp/logo_gemini_color_1x_web_24dp.png" width="8px" height="8px"> on the left hand side.
-2. Insert ``Please explain what main.py file do?`` into the Gemini prompt.
+2. Select the `main.py` file in the Explorer.
+3. Insert ``Please explain what main.py file do?`` into the Gemini prompt.
 
 Make sure to replace the required variables in `config.py` so you can access them safely in `main.py`.
 
-Open `~/data-journey/ETL/CloudRun/config.py` <walkthrough-editor-open-file filePath="~/data-journey/ETL/CloudRun/config.py">by clicking here</walkthrough-editor-open-file> and add your own variables.
+Open `~/data-journey/ETL/CloudRun/config.py` <walkthrough-editor-open-file filePath="/home/admin_/data-journey/ETL/CloudRun/config.py">by clicking here</walkthrough-editor-open-file> and add your own variables.
 
 Once the code is completed build the container from `./ETL/Cloud Run` into a new [Container Repository](https://cloud.google.com/artifact-registry/docs/overview) named `data-processing-service`.
 
@@ -328,11 +329,10 @@ Define a Pub/Sub subscription named `dj-subscription_cloud_run` that can forward
 You will need to create a Push Subscription to the Pub/Sub topic we already defined.
 
 Enter the displayed URL of your processing in `./config_env.sh` as `PUSH_ENDPOINT` & reset the environment variables.
-Open `~/data-journey/Data-Simulator/config_env.sh` <walkthrough-editor-open-file filePath="~/data-journey/Data-Simulator/config_env.sh">by clicking here</walkthrough-editor-open-file> and add your PUSH_ENDPOINT.
+Open `~/data-journey/Data-Simulator/config_env.sh` <walkthrough-editor-open-file filePath="/home/admin_/data-journey/Data-Simulator/config_env.sh">by clicking here</walkthrough-editor-open-file> and add your PUSH_ENDPOINT.
 
 ```bash
-cd ~/data-journey/Data-Simulator/
-source config_env.sh
+source /home/admin_/data-journey/Data-Simulator/config_env.sh
 ```
 
 Create PubSub push subscription:
@@ -354,7 +354,8 @@ You can now stream website interaction data points through your Cloud Run Proxy 
 Run:
 
 ```bash
-python3 ./datalayer/synth_data_stream.py --endpoint=$ENDPOINT_URL
+python3 /home/admin_/data-journey/Data-Simulator/synth_data_stream.py --endpoint=$ENDPOINT_URL
+python3 /home/admin_/data-journey/Data-Simulator/synth_json_stream.py --endpoint=$ENDPOINT_URL --bucket=$BUCKET --file=$FILE
 ```
 to direct an artificial click stream at your pipeline. No need to reinitialize if you still have the clickstream running from earlier.
 
