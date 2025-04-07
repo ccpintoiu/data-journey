@@ -394,7 +394,7 @@ Dataflow is a great tool to integrate into your pipeline for high volume data st
 For the lab below let's reference the working directory:
 
 ```bash
-cd ETL/Dataflow
+cd /home/admin_/data-journey/ETL/Dataflow
 ```
 
 ###  Dataflow - Step 1
@@ -408,7 +408,6 @@ The processing service will stream the transformed data into this table. Read ab
 Ok, let's create teh Bigquery table:
 
 ```bash
-bq --location=$GCP_REGION mk --dataset $GCP_PROJECT:data_journey
 bq mk --location=$GCP_REGION --table $GCP_PROJECT:data_journey.dataflow user_pseudo_id:STRING,event_count:INTEGER
 ```
 
@@ -440,7 +439,7 @@ Finally, all we are missing is your Dataflow job to apply transformations, aggre
 
 You need to apply custom aggregations on the incoming data. That means you need to create a dataflow job based on a [flex-template](https://cloud.google.com/dataflow/docs/guides/templates/using-flex-templates).
 
-Find & examine the pipeline code in `.ETL/Dataflow/dataflow_processing.py`. Use Gemini to get explanations:
+Find & examine the pipeline code in `/home/admin_/data-journey/ETL/Dataflow/dataflow_processing.py`. Use Gemini to get explanations:
 
 1. Open Gemini Code Assist <img style="vertical-align:middle" src="https://www.gstatic.com/images/branding/productlogos/gemini/v4/web-24dp/logo_gemini_color_1x_web_24dp.png" width="8px" height="8px"> on the left hand side.
 2. Insert ``What does dataflow_processing.py do?`` into the Gemini prompt.
@@ -452,7 +451,7 @@ The aggregated values should be written into your BigQuery table.
 
 Before you need to replace the required variables in `config.py` so you can access them safely in `dataflow_processing.py`.
 
-Open `~/data-journey/ETL/Dataflow/config.py` <walkthrough-editor-open-file filePath="~/data-journey/ETL/Dataflow/config.py">by clicking here</walkthrough-editor-open-file> and add your project and location.
+Open `/home/admin_/data-journey/ETL/Dataflow/config.py` <walkthrough-editor-open-file filePath="/home/admin_/data-journey/ETL/Dataflow/config.py">by clicking here</walkthrough-editor-open-file> and add your project and location.
 
 Before moving to the next step take a few minutes to understand the dataflow processing.
 
