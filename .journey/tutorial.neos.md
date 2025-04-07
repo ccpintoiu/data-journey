@@ -528,15 +528,24 @@ After a minute or two you should find your BigQuery destination table populated 
 
 
 <walkthrough-tutorial-duration duration="30"></walkthrough-tutorial-duration>
-{{ author('Cosmin Pintoiu', 'https://www.linkedin.com/in/cosmin-pintoiu/') }}
+<!--{{ author('Cosmin Pintoiu', 'https://www.linkedin.com/in/cosmin-pintoiu/') }} -->
 <walkthrough-tutorial-difficulty difficulty="3"></walkthrough-tutorial-difficulty>
 
 
 In comparison to ETL, there's also a process called ELT. ELT can be used if the data transformations are not as memory critical and can be performed after loading the data into the target system and location.
 
 
-During this lab, you gather user feedback to assess the impact of model adjustments on real-world use (prediction), ensuring that our fraud detection system effectively balances accuracy with user satisfaction. 
-* Use Dataform, BigQuery and Gemini to Perform sentiment analysis of customer feedback.
+During this lab, you gather consolidate views on:
+* **Returning Users**
+This view aggregates the first and the last engagement of by user and defines a churned user: Churned -> If last activity was within 24h of sign up
+
+* **User Demographics**
+This view extracts some demographic data from the user that has been collected by Google Analytics; E.g. country, device/OS, language
+
+* **User Behaviour**
+This view aggregates KPIs that describe the user behaviour. E.g.  count of completed levels, sum of scores, # of challenges to a friend
+
+  
 ### Dataform 
 
 Dataform is a fully managed service that helps data teams build, version control, and orchestrate SQL workflows in BigQuery. It provides an end-to-end experience for data transformation, including:
@@ -575,26 +584,43 @@ Go to [Dataform](https://console.cloud.google.com/bigquery/dataform) (part of th
 
 First let's make sure we have the Project number in a var:
 ```bash
+gcloud auth activate-service-account [Provided_USEr]
+gcloud auth login
 export PROJECT_NUMBER=$(gcloud projects describe "$GCP_PROJECT" --format="value(projectNumber)")
 ```
-Now, let's follow the steps:"
+Now, let's follow the steps: (Open Dataform from the Bigquery console)
+
+1. In the {{console_name_short}}, open Dataform:
+
+    {% setvar button_text %}Go to Bigquery/Dataform{% endsetvar %}
+    {% setvar console_path %}bigquery/dataform{% endsetvar %}
+    {% include "docs/includes/_open_console.html" %}
+
+1. Click <walkthrough-spotlight-pointer
+   cssSelector="css(a[id$=create-repository])"
+   validationPath="/bigquery/dataform"
+   validationLink="/bigquery/dataform">**CREATE REPOSITORY**
+   </walkthrough-spotlight-pointer>.
+
 
 1. Click on <walkthrough-spotlight-pointer locator="css(a[id$=create-repository])">+ CREATE REPOSITORY</walkthrough-spotlight-pointer>
 
 2. Use the following values when creating the repository:
 
     Repository ID: `datajourney-repository` \
-    Region: `us-central1` \
+    Region: `europe-west1` \
     Service Account: `Default Dataform service account`
 
 3. And click on <walkthrough-spotlight-pointer locator="text('create')">CREATE</walkthrough-spotlight-pointer>
-
-{% set DATAFORM_SA = "service-{}@gcp-sa-dataform.iam.gserviceaccount.com".format(PROJECT_NUMBER) %}
-
+```bash
+export DATAFORM_SA="service-${PROJECT_NUMBER}@gcp-sa-dataform.iam.gserviceaccount.com"
+```
 The dataform service account you see on your screen should be `{{ DATAFORM_SA }}`. We will need it later.
 
 
 Next, click <walkthrough-spotlight-pointer locator="text('go to repositories')">GO TO REPOSITORIES</walkthrough-spotlight-pointer>, and then choose the <walkthrough-spotlight-pointer locator="text('hackathon-repository')">hackathon-repository</walkthrough-spotlight-pointer> you just created.
+
+
 
 ### Create a Dataform Workspace
 
