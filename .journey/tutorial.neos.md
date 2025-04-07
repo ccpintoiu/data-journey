@@ -462,21 +462,20 @@ Before moving to the next step take a few minutes to understand the dataflow pro
 
 To create a flex-template we first need to build the pipeline code as container in the Container Registry.
 
-So we need to build the Dataflow folder content as container named `beam-processing-flex-template` to your Container Registry.
+So we need to build the Dataflow folder content as container named `beam-processing-flex-template` to your Artifact Registry.
 
 Checkout the [docs](https://cloud.google.com/sdk/gcloud/reference/dataflow/flex-template/build) on how to build a dataflow flex-template.
 
 Create a Cloud Storage Bucket named `gs://<project-id>-gaming-events` and create a Dataflow flex-template based on the built container and place it in your new GCS bucket:
 
-```bash
-gcloud builds submit --tag gcr.io/$GCP_PROJECT/beam-processing-flex-template
-```
-
-
 Create a new bucket by running:
 
 ```bash
 gsutil mb -c standard -l europe-west1 gs://$GCP_PROJECT-gaming-events
+```
+
+```bash
+gcloud builds submit --tag gcr.io/$GCP_PROJECT/beam-processing-flex-template
 ```
 
 Build the flex-template into your bucket using:
@@ -493,8 +492,10 @@ Run a Dataflow job based on the flex-template you just created.
 The job creation will take 5-10 minutes.
 
 Check the [documentation on the flex-template run command](https://cloud.google.com/sdk/gcloud/reference/dataflow/flex-template/run).
-
-
+```bash
+# gcloud auth configure-docker gcr.io
+# ADD Artifact Registry to Service account: data-journey-pipeline@dataj2.iam.gserviceaccount.com
+```
 ```bash
 gcloud dataflow flex-template run dataflow-job --template-file-gcs-location=gs://$GCP_PROJECT-gaming-events/df_templates/dataflow_template.json --region=europe-west1 --service-account-email="data-journey-pipeline@$GCP_PROJECT.iam.gserviceaccount.com" --max-workers=1 --network=terraform-network
 ```
@@ -506,7 +507,7 @@ You can now stream website interaction data points through your Cloud Run Proxy 
 Run:
 
 ```bash
-python3 synth_json_stream.py --endpoint=$ENDPOINT_URL --bucket=$BUCKET --file=$FILE
+python3 /home/admin_/data-journey/Data-Simulator/synth_json_stream.py --endpoint=$ENDPOINT_URL --bucket=$BUCKET --file=$FILE
 ```
 
 to direct an artificial click stream at your pipeline. No need to reinitialize if you still have the clickstream running from earlier.
