@@ -154,6 +154,12 @@ Set all necessary environment variables by running:
 ```bash
 source config_env.sh
 ```
+### ❗ In case you accidentally close the tutorial or the editor, or the session expires you can resume by running the following commands: 
+
+```bash
+cd ~/data-journey/Data-Simulator/
+source config_env.sh
+```
 
 You can now stream website interaction data points through a Cloud Run Proxy Service into your Pub/Sub Topic.
 
