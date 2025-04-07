@@ -116,7 +116,7 @@ Let's ask Gemini:
 
 
 First, we need to change the terraform variable file. You can open files directly from this tutorial:
-Open `terraform.tfvars` <walkthrough-editor-open-file filePath="terraform.tfvars">by clicking here</walkthrough-editor-open-file> and add your own project id.
+Open `terraform.tfvars` <walkthrough-editor-open-file filePath="/home/admin_/data-journey/Data-Simulator/terraform.tfvars">by clicking here</walkthrough-editor-open-file> and add your own project id.
 
 ❗ Please do not include any whitespaces when setting these variablers.
 
@@ -139,11 +139,11 @@ gcloud run services list
 ```
 
 The endpoint URL refers to the URL of the proxy container deployed to Cloud Run with the streaming data input. 
-We need to add GCP Project ID, the GCP Region and the endpoint URL in `./config_env.sh`<walkthrough-editor-open-file filePath="Data-Simulator/config_env.sh">by clicking here</walkthrough-editor-open-file>.
+We need to add GCP Project ID, the GCP Region and the endpoint URL in `./config_env.sh`<walkthrough-editor-open-file filePath="/home/admin_/data-journey/Data-Simulator/config_env.sh">by clicking here</walkthrough-editor-open-file>.
 
 
 After, enter the variables in the config file. You can open it
-<walkthrough-editor-open-file filePath="config_env.sh">
+<walkthrough-editor-open-file filePath="/home/admin_/data-journey/Data-Simulator/config_env.sh">
 in the Cloud Shell Editor
 </walkthrough-editor-open-file>
 to read or edit it.
