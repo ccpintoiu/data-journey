@@ -48,7 +48,12 @@ echo "I'm ready to get started."
 ```
 
 Execute by pressing the return key in the terminal that has been opened in the lower part of your screen.
-
+Now let's setup project ID:
+```bash
+cd ~
+gcloud config set project [PROJECT_ID]
+```
+You can find the Project ID in Cloud Console, if you click on the project name.
 
 ### Enable services
 
