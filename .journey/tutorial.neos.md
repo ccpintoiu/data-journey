@@ -128,6 +128,9 @@ terraform init -upgrade
 ```bash
 gcloud config set project [PROJECT_ID]
 ```
+
+Just before, we will need to manually create Artifact Registry multi region named: gcr.io (go to Artifact Registrry and create new Repo, of type Docker, multi-region.
+
 ```bash
 terraform apply -var-file terraform.tfvars
 ```
