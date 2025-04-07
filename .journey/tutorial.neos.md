@@ -492,9 +492,14 @@ Run a Dataflow job based on the flex-template you just created.
 The job creation will take 5-10 minutes.
 
 Check the [documentation on the flex-template run command](https://cloud.google.com/sdk/gcloud/reference/dataflow/flex-template/run).
+
 ```bash
 # gcloud auth configure-docker gcr.io
 # ADD Artifact Registry to Service account: data-journey-pipeline@dataj2.iam.gserviceaccount.com
+# ( in IAM select data-journey-pipeline@... and add Artifact Registry Reader, Storage Creator / Viewer. )
+# ??  Ensure it has the "Storage Object Viewer" and "Storage Object Creator" roles for the necessary GCS bucket. - not sure it was needed.
+# Note: If you are running into access problems with dataflow job, add **Service Account user role to your user account**.
+# ( in IAM select your user (ex.: admin@... and add **Service Account user** )
 ```
 ```bash
 gcloud dataflow flex-template run dataflow-job --template-file-gcs-location=gs://$GCP_PROJECT-gaming-events/df_templates/dataflow_template.json --region=europe-west1 --service-account-email="data-journey-pipeline@$GCP_PROJECT.iam.gserviceaccount.com" --max-workers=1 --network=terraform-network
