@@ -98,6 +98,8 @@ We have to make sure your GCP project is prepared.
 Clone the github repo we'll be using in this walkthrough:
 
 ```bash
+cd ~
+# cd to /home/admin_
 git clone https://github.com/NucleusEngineering/data-journey
 cd data-journey/Data-Simulator
 ```
@@ -109,13 +111,13 @@ Want to know what exactly the Terraform configuration file does?
 
 Let's ask Gemini:
 
-1. Open  <walkthrough-editor-open-file filePath="~/data-journey/Data-Simulator/main.tf">`main.tf`</walkthrough-editor-open-file>.
+1. Open  <walkthrough-editor-open-file filePath="/home/admin_/data-journey/Data-Simulator/main.tf">`main.tf`</walkthrough-editor-open-file>.
 2. Open Gemini Code Assist <img style="vertical-align:middle" src="https://www.gstatic.com/images/branding/productlogos/gemini/v4/web-24dp/logo_gemini_color_1x_web_24dp.png" width="8px" height="8px"> on the left hand side.
 3. Insert ``What main.tf file do?`` into the Gemini prompt.
 
 
 First, we need to change the terraform variable file. You can open files directly from this tutorial:
-Open `./terraform.tfvars` <walkthrough-editor-open-file filePath="Data-Simulator/terraform.tfvars">by clicking here</walkthrough-editor-open-file> and add your own project id.
+Open `terraform.tfvars` <walkthrough-editor-open-file filePath="terraform.tfvars">by clicking here</walkthrough-editor-open-file> and add your own project id.
 
 ❗ Please do not include any whitespaces when setting these variablers.
 
