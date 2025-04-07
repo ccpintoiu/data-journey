@@ -125,7 +125,9 @@ Build the basic permissions & networking setup via terraform apply.
 ```bash
 terraform init -upgrade
 ```
-
+```bash
+gcloud config set project [PROJECT_ID]
+```
 ```bash
 terraform apply -var-file terraform.tfvars
 ```
