@@ -13,4 +13,4 @@
 # limitations under the License.
 
 project_id = 'default-project-id'
-location = 'default-region'
+location = 'europe-west1'
