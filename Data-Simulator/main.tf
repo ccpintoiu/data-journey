@@ -135,7 +135,7 @@ resource "google_project_iam_member" "editor" {
   member = "serviceAccount:service-${data.google_project.project.number}@gcp-sa-pubsub.iam.gserviceaccount.com"
 }
 
-resource "google_artifact_registry_repository" "gcr.io" {
+resource "google_artifact_registry_repository" "gcrio" {
   location      = "us"
   repository_id = "gcr.io"
   description   = "docker repository"
