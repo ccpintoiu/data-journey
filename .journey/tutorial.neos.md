@@ -140,7 +140,7 @@ terraform apply -var-file terraform.tfvars
 After a few minutes, we should have the proxy container up and running. We can check and copy the endpoint URL by running:
 
 ```bash
-gcloud run services list --project [PROJECT_ID]
+gcloud run services list 
 ```
 
 The endpoint URL refers to the URL of the proxy container deployed to Cloud Run with the streaming data input. 
