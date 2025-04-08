@@ -588,22 +588,9 @@ gcloud auth activate-service-account [Provided_USEr]
 gcloud auth login
 export PROJECT_NUMBER=$(gcloud projects describe "$GCP_PROJECT" --format="value(projectNumber)")
 ```
-Now, let's follow the steps: (Open Dataform from the Bigquery console)
+Now, let's follow the steps:
 
-1. In the {{console_name_short}}, open Dataform:
-
-    {% setvar button_text %}Go to Bigquery/Dataform{% endsetvar %}
-    {% setvar console_path %}bigquery/dataform{% endsetvar %}
-    {% include "docs/includes/_open_console.html" %}
-
-1. Click <walkthrough-spotlight-pointer
-   cssSelector="css(a[id$=create-repository])"
-   validationPath="/bigquery/dataform"
-   validationLink="/bigquery/dataform">**CREATE REPOSITORY**
-   </walkthrough-spotlight-pointer>.
-
-
-1. Click on <walkthrough-spotlight-pointer locator="css(a[id$=create-repository])">+ CREATE REPOSITORY</walkthrough-spotlight-pointer>
+1. Click on <walkthrough-spotlight-pointer locator="css(a[id$=create-repository])">CREATE REPOSITORY</walkthrough-spotlight-pointer>
 
 2. Use the following values when creating the repository:
 
