@@ -13,7 +13,7 @@ WITH first_values AS (
           device.language as language,
           ROW_NUMBER() OVER (PARTITION BY user_pseudo_id ORDER BY event_timestamp DESC) AS row_num
       FROM 
-        ${ref("events_*")}
+        ${ref("events")}
       WHERE event_name="user_engagement"
       )
   SELECT * EXCEPT (row_num)
