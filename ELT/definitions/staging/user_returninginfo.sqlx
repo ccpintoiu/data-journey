@@ -11,7 +11,7 @@ WITH firstlasttouch AS (
       MIN(event_timestamp) AS user_first_engagement,
       MAX(event_timestamp) AS user_last_engagement
     FROM
-      ${ref("events_*")}
+      ${ref("events")}
     WHERE event_name="user_engagement"
     GROUP BY
       user_pseudo_id
