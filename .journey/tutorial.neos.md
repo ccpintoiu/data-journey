@@ -725,6 +725,15 @@ Notice the usage of `$ref` in line 12, of `ELT/definitions/ml_models/logistic_re
 ### **Execute Dataform workflows**
 
 
+First, let's bring the events data we will use in BQ:
+
+```bash
+cd /home/admin_/data-journey/ELT \
+gcloud storage cp /home/admin_/data-journey/ELT/events gs://example-bucket-name-${GCP_PROJECT} \
+bq mk --location=europe-west1 --table $GCP_PROJECT:data_journey.events \
+bq load --source_format=PARQUET $GCP_PROJECT:data_journey.events
+```
+
 Run the dataset creation by **Tag**. Tag allow you to just execute parts of the workflows and not the entire workflow. 
 
 1. Click on <walkthrough-spotlight-pointer locator="semantic({button 'Start execution'})">Start execution</walkthrough-spotlight-pointer> > <walkthrough-spotlight-pointer locator="text('tags')">Tags</walkthrough-spotlight-pointer> \> <walkthrough-spotlight-pointer locator="semantic({button 'Start execution'})"> Start execution</walkthrough-spotlight-pointer>
