@@ -814,7 +814,7 @@ gcloud config list
 Set compute zone
 
 ```bash
-gcloud config set compute/zone us-central1-f
+gcloud config set compute/zone europe-west1
 ```
 
 ### Deploy using Terraform
@@ -920,7 +920,9 @@ My SQL connection profile:
 * The IP and port of the Cloud SQL for MySQL instance created earlier
 * username: `root`, password: `password123`
 * encryption: none
-* connectivity method: IP allowlisting BigQuery connection profile:
+* connectivity method: IP allowlisting
+
+BigQuery connection profile:
 * connection profile ID
 
 Create stream by selecting MyQL and BigQuery connection profiles, and make sure to mark the tables you want to replicate (we will only replicate the datastream-datajourney database), and finally run validation, then create and start the stream.
@@ -952,11 +954,11 @@ INSERT INTO database_datajourney.example_table (event_timestamp, event_name, use
 ```
 
 ```bash
-SQL_FILE=update_mysql.sql
-SERVICE_ACCOUNT=$(gcloud sql  describe mysql | grep serviceAccountEmailAddress | awk '{print $2;}')
+SQL_FILE=update_mysql.sql \
+SERVICE_ACCOUNT=$(gcloud sql instances describe mysql | grep serviceAccountEmailAddress | awk '{print $2;}') \
 
-gsutil cp ${SQL_FILE} gs://${project_id}/resources/${SQL_FILE}
-gsutil iam ch serviceAccount:${SERVICE_ACCOUNT}:objectViewer gs://${project_id}
+gsutil cp ${SQL_FILE} gs://${project_id}/resources/${SQL_FILE} \ 
+gsutil iam ch serviceAccount:${SERVICE_ACCOUNT}:objectViewer gs://${project_id} \ 
 
 gcloud sql import sql mysql gs://${project_id}/resources/${SQL_FILE} --quiet
 ```
