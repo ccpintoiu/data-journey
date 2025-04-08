@@ -11,7 +11,7 @@ WITH events_first24hr AS (
     SELECT
       e.*
     FROM
-      ${ref("events_*")} e
+      ${ref("events")} e
     JOIN
       ${ref("user_returninginfo")} r 
     ON
