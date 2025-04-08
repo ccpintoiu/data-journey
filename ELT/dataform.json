@@ -3,8 +3,8 @@
   "assertionSchema": "dataform_assertions",
   "warehouse": "bigquery",
   "defaultDatabase": "<your-project-id>",
-  "defaultLocation": "US",
+  "defaultLocation": "europe-west1",
   "vars": {
-  "ml_models_dataset": "`<your-project-id>.outputs`"
+  "ml_models_dataset": "`<your-project-id>.data_journey.outputs`"
   }
 }
