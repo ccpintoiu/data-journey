@@ -27,5 +27,5 @@ By the end of this workshop, you will learn how to:
 
 # Good luck and have fun! 
 
-[![Begin the Tutorial](.journey/journey.svg)](https://shell.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https://github.com/ccpintoiu/data-journey.git&cloudshell_tutorial=.journey/tutorial.neos.md&show=ide&cloudshell_workspace=~/)
+[![Begin the Tutorial](.journey/journey.svg)](https://shell.cloud.google.com/cloudshell/editor?cloudshell_git_repo=https://github.com/ccpintoiu/data-journey.git&cloudshell_tutorial=.journey/tutorial.neos.md&show=ide&cloudshell_workspace=/home)
 
